@@ -36,7 +36,6 @@
             }
             return false;
     };
-	
 	function Initialize() {
 	    var powerPaneButton = document.getElementById("crm-gmcs-button");
 	    if (!powerPaneButton) {
@@ -49,6 +48,10 @@
 	}
 	Initialize();
 	document.getElementById("crm-gmcs-button").addEventListener("click", slideRightPane);
+	function testfunc() {
+		debugger;
+		alert("hi");
+	}
 	
 	function slideRightPane() {
 		toggle();
