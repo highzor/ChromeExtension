@@ -3,6 +3,6 @@
     });
 	
 function createContact() {
-	var url = window.location.href.split("#")[0]+"?etn=account&pagetype=entityrecord";
-	window.location.href = url;
+	//var url = window.location.href.split("#")[0]+"?etn=account&pagetype=entityrecord";
+	//window.location.href = url;
 }
