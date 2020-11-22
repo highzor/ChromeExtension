@@ -3,7 +3,7 @@
     "name" : "GMCS CRM",
     "description" : "Расширения для CRM",
     "version" : "1.0",
-	"web_accessible_resources": ["popup.html", "/*", "injected.js"],
+	"web_accessible_resources": ["popup.html", "/*", "inject.js", "inject2.js"],
     "browser_action": {
         "default_title" : "GMCS CRM",
         "default_icon" : "icon.png" //Указывается иконка для кнопки на панели инструментов Chrome
@@ -13,7 +13,7 @@
 	    "scripts":["background.js"]
 	},
 	"content_scripts": [ {
-      "js": [ "content-script.js", "inject.js" ],
+      "js": [ "content-script.js", "inject.js", "inject2.js" ],
 	  "matches": [ "\u003Call_urls>", "http://*/*, https://*/*" ],
       "run_at": "document_end"
    } ],
