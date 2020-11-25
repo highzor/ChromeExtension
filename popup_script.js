@@ -21,19 +21,42 @@ function searchEntity() {
 	if (!inputLine && inputLine.value.length == 0) return;
 	var config = getConfigObject();
 	var searchField = defineField(inputLine.value, config);
-	var filterParam = getFilterParam(searchField);
+	var filterParam = getFilterParam(searchField, inputLine.value);
 	var entities = new Array();
-	entities = getEntities(searchField, config, inputLine.value);
+	entities = getEntities(searchField, config, filterParam);
+	if (entities.length == 0) return;
+	putInResultTable(entities);
+}
+
+function putInResultTable(entities) {
 	debugger;
+	var resultTable = document.getElementById("exampleFormControlSelect2");
+	for (var i = 0; i < entities.length; i++) {
+	 var optionEl = document.createElement("option");
+	 optionEl.innerHTML = entities[i].fullname;
+	 resultTable.appendChild(optionEl);
+	}
 }
 
-function getFilterParam() {
-	if 
+function getFilterParam(searchField, inputValue) {
+	debugger;
+	var filterParam = "&$filter=";
+	if (/\d/.test(inputValue)) {
+		if (inputValue.includes('+')) {
+			inputValue = inputValue.replace("+", "%2B");
+		}
+		filterParam += searchField + " eq '" + inputValue + "'";
+		return filterParam;
+	} else {
+		filterParam += "startswith(" + searchField + ", '" + inputValue + "')";
+		return filterParam;
+	}
 }
 
-function getEntities(searchField, config, inputValue) {
+function getEntities(searchField, config, filterParam) {
+	debugger;
 	var selectFields = getFieldForConnectingString(config);
-	var oDataEndpointUrl = config.Address + "api/data/v9.0/contacts?$select=" + config.FindEntityRecord + "id" + selectFields + "&$filter=contains(" + searchField + ", '" + inputValue + "')";
+	var oDataEndpointUrl = config.Address + "api/data/v9.0/contacts?$select=" + config.FindEntityRecord + "id" + selectFields + filterParam;
     var service = GetRequestObject();
     if (service != null) {
         service.open("GET", oDataEndpointUrl, false);
@@ -56,8 +79,8 @@ function getFieldForConnectingString(config) {
 	return selectFields;
 }
 
-function defineField(fieldValue, config) {
-	if (/\d/.test(fieldValue)) {
+function defineField(inputValue, config) {
+	if (/\d/.test(inputValue)) {
 		return config.SearchFields[1];
 	} else {
 		return config.SearchFields[0];
@@ -83,6 +106,7 @@ function getConfigObject() {
         service.setRequestHeader("X-Requested-With", "XMLHttpRequest");
         service.setRequestHeader("Accept", "application/json, text/javascript, */*");
         service.send(null);
+        //var retrieved = JSON.parse(service.responseText);
 		var retrieved = service.responseText;
         if (retrieved.length > 0) {
 			obj = eval(retrieved);
